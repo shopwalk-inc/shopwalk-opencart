@@ -1,0 +1,24 @@
+{
+    "name": "shopwalk-inc/opencart-ucp",
+    "description": "Universal Commerce Protocol (UCP) adapter for OpenCart — exposes any OpenCart store to UCP-compliant AI shopping agents.",
+    "type": "opencart-extension",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=8.1"
+    },
+    "authors": [
+        {
+            "name": "Shopwalk, Inc.",
+            "homepage": "https://shopwalk.com"
+        }
+    ],
+    "autoload": {
+        "classmap": [
+            "upload/system/library/shopwalk_ucp/"
+        ]
+    },
+    "support": {
+        "issues": "https://github.com/shopwalk-inc/opencart-ucp/issues",
+        "source": "https://github.com/shopwalk-inc/opencart-ucp"
+    }
+}

@@ -1,0 +1,29 @@
+# Append these rules to OpenCart's .htaccess to enable clean /ucp/v1/* paths.
+#
+# Copy-paste below the existing `RewriteEngine On` line.
+
+# Canonical UCP paths → OpenCart extension controllers
+RewriteRule ^ucp/v1/checkout-sessions/?$                     index.php?route=extension/shopwalk_ucp/checkout [QSA,L]
+RewriteRule ^ucp/v1/checkout-sessions/([^/]+)/?$             index.php?route=extension/shopwalk_ucp/checkout/update&id=$1 [QSA,L]
+RewriteRule ^ucp/v1/checkout-sessions/([^/]+)/complete/?$    index.php?route=extension/shopwalk_ucp/checkout/complete&id=$1 [QSA,L]
+RewriteRule ^ucp/v1/checkout-sessions/([^/]+)/cancel/?$      index.php?route=extension/shopwalk_ucp/checkout/cancel&id=$1 [QSA,L]
+RewriteRule ^ucp/v1/checkout/?$                              index.php?route=extension/shopwalk_ucp/direct [QSA,L]
+RewriteRule ^ucp/v1/orders/?$                                index.php?route=extension/shopwalk_ucp/orders [QSA,L]
+RewriteRule ^ucp/v1/orders/([0-9]+)/?$                       index.php?route=extension/shopwalk_ucp/orders/fetch&id=$1 [QSA,L]
+RewriteRule ^ucp/v1/catalog/products/?$                      index.php?route=extension/shopwalk_ucp/catalog [QSA,L]
+RewriteRule ^ucp/v1/catalog/products/([0-9]+)/?$             index.php?route=extension/shopwalk_ucp/catalog/fetch&id=$1 [QSA,L]
+RewriteRule ^ucp/v1/identity/link/?$                         index.php?route=extension/shopwalk_ucp/identity/link [QSA,L]
+RewriteRule ^ucp/v1/identity/link/([^/]+)/?$                 index.php?route=extension/shopwalk_ucp/identity/unlink&id=$1 [QSA,L]
+RewriteRule ^ucp/v1/oauth/authorize/?$                       index.php?route=extension/shopwalk_ucp/oauth/authorize [QSA,L]
+RewriteRule ^ucp/v1/oauth/token/?$                           index.php?route=extension/shopwalk_ucp/oauth/token [QSA,L]
+RewriteRule ^ucp/v1/oauth/revoke/?$                          index.php?route=extension/shopwalk_ucp/oauth/revoke [QSA,L]
+RewriteRule ^ucp/v1/oauth/userinfo/?$                        index.php?route=extension/shopwalk_ucp/oauth/userinfo [QSA,L]
+RewriteRule ^ucp/v1/oauth/register/?$                        index.php?route=extension/shopwalk_ucp/oauth/register [QSA,L]
+RewriteRule ^ucp/v1/webhook/subscriptions/?$                 index.php?route=extension/shopwalk_ucp/webhook/list [QSA,L]
+RewriteRule ^ucp/v1/webhook/subscribe/?$                     index.php?route=extension/shopwalk_ucp/webhook/subscribe [QSA,L]
+RewriteRule ^ucp/v1/webhook/subscriptions/([^/]+)/?$         index.php?route=extension/shopwalk_ucp/webhook/unsubscribe&id=$1 [QSA,L]
+
+# Static .well-known dispatchers (preferred over routing through OpenCart so that
+# the discovery docs respond even when OpenCart rewrites are off):
+RewriteRule ^\.well-known/ucp/?$                             .well-known/ucp.php [L]
+RewriteRule ^\.well-known/oauth-authorization-server/?$      .well-known/oauth-authorization-server.php [L]

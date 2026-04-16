@@ -1,0 +1,132 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-shopwalk-ucp" data-bs-toggle="tooltip" title="{{ text_save|default('Save') }}" class="btn btn-primary"><i class="fa-solid fa-save"></i></button>
+        <a href="{{ cancel }}" data-bs-toggle="tooltip" title="{{ text_cancel|default('Cancel') }}" class="btn btn-light"><i class="fa-solid fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="card mb-3">
+      <div class="card-header"><i class="fa-solid fa-plug"></i> Status — v{{ plugin_version }} · UCP {{ spec_version }}</div>
+      <div class="card-body">
+        <p><strong>Discovery URL:</strong> <a href="{{ discovery_url }}" target="_blank">{{ discovery_url }}</a></p>
+        <p><strong>Signing fingerprint:</strong> <code>{{ signing_fingerprint }}</code></p>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header"><i class="fa-solid fa-stethoscope"></i> Self-test</div>
+      <div class="card-body">
+        <table class="table table-bordered">
+          <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+          <tbody>
+          {% for item in self_test %}
+            <tr>
+              <td>{{ item.name }}</td>
+              <td>
+                {% if item.status == 'ok' %}<span class="badge bg-success">OK</span>
+                {% elseif item.status == 'warn' %}<span class="badge bg-warning">Warn</span>
+                {% else %}<span class="badge bg-danger">Fail</span>{% endif %}
+              </td>
+              <td>{{ item.detail }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        <button type="button" id="run-self-test" class="btn btn-outline-secondary btn-sm">Re-run self-test</button>
+      </div>
+    </div>
+
+    <form id="form-shopwalk-ucp" action="{{ action }}" method="post" class="form-horizontal">
+      <div class="card mb-3">
+        <div class="card-header"><i class="fa-solid fa-gear"></i> Configuration</div>
+        <div class="card-body">
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Enabled</label>
+            <div class="col-sm-10">
+              <select name="shopwalk_ucp_status" class="form-select">
+                <option value="1" {% if status == 1 %}selected{% endif %}>Enabled</option>
+                <option value="0" {% if status == 0 %}selected{% endif %}>Disabled</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Agent shared secret (optional)</label>
+            <div class="col-sm-10">
+              <input type="text" name="shopwalk_ucp_agent_secret" value="{{ agent_secret }}" class="form-control" placeholder="Leave blank to accept unsigned requests (bearer-only)">
+              <small class="text-muted">If set, inbound agent requests must include a Request-Signature JWT signed with this secret (HS256).</small>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Shopwalk license key (Tier 2)</label>
+            <div class="col-sm-10">
+              <input type="text" name="shopwalk_ucp_license_key" value="{{ license_key }}" class="form-control" placeholder="Paste your Shopwalk partner license key">
+              <small class="text-muted">Optional. <a href="{{ shopwalk_connect_url }}" target="_blank">Get a free key →</a> unlocks real-time product sync, partner dashboard, and brand customization.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="card mb-3">
+      <div class="card-header"><i class="fa-solid fa-satellite-dish"></i> Agent subscriptions</div>
+      <div class="card-body">
+        {% if subscriptions|length == 0 %}
+          <p class="text-muted">No agents have subscribed yet. Once a UCP agent calls <code>POST /webhook/subscribe</code> with its bearer token, it will appear here.</p>
+        {% else %}
+          <table class="table table-striped">
+            <thead><tr><th>ID</th><th>Client</th><th>Callback URL</th><th>Events</th><th>Created</th></tr></thead>
+            <tbody>
+            {% for s in subscriptions %}
+              <tr>
+                <td><code>{{ s.id }}</code></td>
+                <td>{{ s.client_id }}</td>
+                <td>{{ s.callback_url }}</td>
+                <td>{{ s.events }}</td>
+                <td>{{ s.created_at|date('Y-m-d H:i') }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header"><i class="fa-solid fa-id-card"></i> Registered OAuth clients</div>
+      <div class="card-body">
+        {% if clients|length == 0 %}
+          <p class="text-muted">No agents are registered. Agents self-register via <code>POST /index.php?route=extension/shopwalk_ucp/oauth/register</code>.</p>
+        {% else %}
+          <table class="table table-striped">
+            <thead><tr><th>Name</th><th>Client ID</th><th>Scopes</th><th>Created</th></tr></thead>
+            <tbody>
+            {% for c in clients %}
+              <tr>
+                <td>{{ c.name }}</td>
+                <td><code>{{ c.client_id }}</code></td>
+                <td>{{ c.scopes }}</td>
+                <td>{{ c.created_at|date('Y-m-d') }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('run-self-test')?.addEventListener('click', async () => {
+  const res = await fetch('index.php?route=extension/shopwalk_ucp/module/ucp.self_test&user_token={{ user_token }}');
+  const { results } = await res.json();
+  alert(results.map(r => `${r.status.toUpperCase()} — ${r.name}: ${r.detail}`).join('\n'));
+});
+</script>
+{{ footer }}
