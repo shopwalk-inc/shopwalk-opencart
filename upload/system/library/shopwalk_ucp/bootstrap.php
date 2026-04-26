@@ -18,7 +18,7 @@ if (defined('SHOPWALK_UCP_BOOTSTRAPPED')) {
 }
 define('SHOPWALK_UCP_BOOTSTRAPPED', true);
 
-define('SHOPWALK_UCP_VERSION',           '0.1.0');
+define('SHOPWALK_UCP_VERSION',           '0.2.0');
 define('SHOPWALK_UCP_SPEC_VERSION',      '2026-04-08');
 define('SHOPWALK_UCP_EXTENSION_CODE',    'shopwalk_ucp');
 define('SHOPWALK_UCP_TABLE_PREFIX',      DB_PREFIX . 'ucp_');

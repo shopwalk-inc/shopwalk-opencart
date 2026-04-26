@@ -1,6 +1,6 @@
 {
     "name": "Shopwalk UCP — Universal Commerce Protocol adapter",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "author": "Shopwalk, Inc.",
     "link": "https://github.com/shopwalk-inc/opencart-ucp",
     "code": "shopwalk_ucp"

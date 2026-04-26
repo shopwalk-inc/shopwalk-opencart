@@ -54,6 +54,7 @@ class Ucp extends \Opencart\System\Engine\Controller
             'status'              => (int) $this->config->get('shopwalk_ucp_status'),
             'license_key'         => (string) $this->config->get('shopwalk_ucp_license_key'),
             'agent_secret'        => (string) $this->config->get('shopwalk_ucp_agent_secret'),
+            'discovery_paused'    => (bool) $this->config->get('shopwalk_ucp_discovery_paused'),
             'shopwalk_connect_url' => 'https://shopwalk.com/partners/signup',
             'discovery_url'       => $this->storeUrl() . '/.well-known/ucp',
         ];
@@ -86,6 +87,61 @@ class Ucp extends \Opencart\System\Engine\Controller
         $results = (new \Shopwalk\Ucp\SelfTest($this->registry))->run();
         $this->response->addHeader('Content-Type: application/json; charset=utf-8');
         $this->response->setOutput(json_encode(['results' => $results], JSON_UNESCAPED_SLASHES));
+    }
+
+    /**
+     * AJAX: pause / resume AI discovery for the connected store.
+     * GET / POST ?enable=1|0
+     */
+    public function toggle_discovery(): void
+    {
+        $this->response->addHeader('Content-Type: application/json; charset=utf-8');
+        if (!$this->validate()) {
+            $this->response->setOutput(json_encode(['success' => false, 'message' => 'Forbidden']));
+            return;
+        }
+        $licenseKey = (string) $this->config->get('shopwalk_ucp_license_key');
+        if ($licenseKey === '') {
+            $this->response->setOutput(json_encode(['success' => false, 'message' => 'No Shopwalk license configured']));
+            return;
+        }
+        $enable = ($this->request->get['enable'] ?? '') === '1';
+        $action = $enable ? 'enable' : 'disable';
+        $apiBase = (string) ($this->config->get('shopwalk_ucp_api_base') ?: 'https://api.shopwalk.com/api/v1');
+        $apiBase = rtrim($apiBase, '/');
+        $url = $apiBase . '/plugin/discovery/' . $action;
+
+        $code = 0;
+        if (function_exists('curl_init')) {
+            $ch = curl_init($url);
+            curl_setopt_array($ch, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_POST           => true,
+                CURLOPT_TIMEOUT        => 5,
+                CURLOPT_HTTPHEADER     => [
+                    'Content-Type: application/json',
+                    'X-SW-License-Key: ' . $licenseKey,
+                ],
+                CURLOPT_POSTFIELDS     => json_encode(['plugin_key' => $licenseKey]),
+            ]);
+            curl_exec($ch);
+            $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+        }
+
+        if ($code < 200 || $code >= 300) {
+            $this->response->setOutput(json_encode([
+                'success' => false,
+                'message' => 'Could not reach Shopwalk. Try again in a moment.',
+            ]));
+            return;
+        }
+
+        $this->saveSetting('shopwalk_ucp_discovery_paused', $enable ? 0 : 1);
+        $this->response->setOutput(json_encode([
+            'success' => true,
+            'paused'  => !$enable,
+        ]));
     }
 
     private function validate(): bool
