@@ -4,6 +4,12 @@ All notable changes to opencart-ucp are tracked here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 and the UCP spec version it targets is noted per release.
 
+## [0.2.0]
+
+### Added
+- "Allow Shopwalk to surface my store" toggle in the admin module dashboard. When unchecked, the merchant's store and products vanish from AI search / shopping / store pages within ~2 minutes via the new shopwalk-api `/api/v1/plugin/discovery/{disable,enable}` endpoints. The plugin stays connected; existing orders are unaffected; sync pauses while paused.
+- `Ucp::toggle_discovery()` admin AJAX endpoint that posts to shopwalk-api with the configured license key and mirrors the result to `shopwalk_ucp_discovery_paused` setting.
+
 ## [0.1.0] — 2026-04-16
 
 Initial public release. Tracks UCP spec `2026-04-08`.

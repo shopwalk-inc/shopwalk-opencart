@@ -69,6 +69,22 @@
               <small class="text-muted">Optional. <a href="{{ shopwalk_connect_url }}" target="_blank">Get a free key →</a> unlocks real-time product sync, partner dashboard, and brand customization.</small>
             </div>
           </div>
+
+          {% if license_key %}
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">AI discovery</label>
+            <div class="col-sm-10">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="sw-discovery-toggle" {% if not discovery_paused %}checked{% endif %}>
+                <label class="form-check-label" for="sw-discovery-toggle">
+                  <strong>Allow Shopwalk to surface my store</strong>
+                </label>
+              </div>
+              <small class="text-muted d-block mt-1">When off, your store and products are hidden from AI search, shopping flows, and store pages within ~2 minutes. The plugin stays connected; existing orders are unaffected.</small>
+              <small id="sw-discovery-status" class="text-muted d-block"></small>
+            </div>
+          </div>
+          {% endif %}
         </div>
       </div>
     </form>
@@ -127,6 +143,30 @@ document.getElementById('run-self-test')?.addEventListener('click', async () => 
   const res = await fetch('index.php?route=extension/shopwalk_ucp/module/ucp.self_test&user_token={{ user_token }}');
   const { results } = await res.json();
   alert(results.map(r => `${r.status.toUpperCase()} — ${r.name}: ${r.detail}`).join('\n'));
+});
+
+document.getElementById('sw-discovery-toggle')?.addEventListener('change', async (ev) => {
+  const cb = ev.currentTarget;
+  const status = document.getElementById('sw-discovery-status');
+  const enable = cb.checked;
+  const prev = !enable;
+  if (!enable && !confirm('Pause AI discovery? Your store and products will be hidden from search, AI shopping, and store pages within ~2 minutes. Existing orders are unaffected.')) {
+    cb.checked = true;
+    return;
+  }
+  cb.disabled = true;
+  if (status) status.textContent = enable ? 'Resuming…' : 'Pausing…';
+  try {
+    const res = await fetch('index.php?route=extension/shopwalk_ucp/module/ucp.toggle_discovery&user_token={{ user_token }}&enable=' + (enable ? '1' : '0'), { method: 'POST' });
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.message || 'Failed');
+    if (status) status.textContent = enable ? 'Discovery resumed.' : 'Discovery paused.';
+  } catch (e) {
+    cb.checked = prev;
+    if (status) status.textContent = e.message || 'Failed';
+  } finally {
+    cb.disabled = false;
+  }
 });
 </script>
 {{ footer }}
