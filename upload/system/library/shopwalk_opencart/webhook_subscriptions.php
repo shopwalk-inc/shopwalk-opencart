@@ -1,6 +1,6 @@
 <?php
 /**
- * Shopwalk\Ucp\WebhookSubscriptions — manage agent webhook subscriptions.
+ * Shopwalk\Opencart\WebhookSubscriptions — manage agent webhook subscriptions.
  *
  * UCP agents subscribe to order lifecycle events by registering a callback
  * URL and an event filter. The plugin fires webhooks to every matching
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Shopwalk\Ucp;
+namespace Shopwalk\Opencart;
 
 final class WebhookSubscriptions
 {

@@ -1,13 +1,13 @@
 <?php
 /**
- * opencart-ucp bootstrap — registers every UCP library class in the autoloader
+ * shopwalk-opencart bootstrap — registers every UCP library class in the autoloader
  * and defines shared constants consumed across the extension.
  *
  * OpenCart 4 controllers require this file once at the top of each request:
  *
- *   require_once DIR_SYSTEM . 'library/shopwalk_ucp/bootstrap.php';
+ *   require_once DIR_SYSTEM . 'library/shopwalk_opencart/bootstrap.php';
  *
- * All classes live in the `Shopwalk\Ucp` namespace so they do not clash with
+ * All classes live in the `Shopwalk\Opencart` namespace so they do not clash with
  * OpenCart's own library namespace.
  */
 
@@ -28,10 +28,10 @@ define('SHOPWALK_UCP_SESSION_TTL',       1800);
 define('SHOPWALK_UCP_SHOPWALK_API_BASE', 'https://api.shopwalk.com/api/v1');
 
 spl_autoload_register(static function (string $class): void {
-    if (strpos($class, 'Shopwalk\\Ucp\\') !== 0) {
+    if (strpos($class, 'Shopwalk\\Opencart\\') !== 0) {
         return;
     }
-    $relative = substr($class, strlen('Shopwalk\\Ucp\\'));
+    $relative = substr($class, strlen('Shopwalk\\Opencart\\'));
     $file = __DIR__ . '/' . strtolower(str_replace('\\', '/', $relative)) . '.php';
     if (is_file($file)) {
         require_once $file;

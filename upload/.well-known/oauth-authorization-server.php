@@ -20,7 +20,7 @@ if (!defined('DIR_APPLICATION') || !defined('DIR_SYSTEM')) {
 }
 
 require_once DIR_SYSTEM . 'startup.php';
-require_once DIR_SYSTEM . 'library/shopwalk_ucp/bootstrap.php';
+require_once DIR_SYSTEM . 'library/shopwalk_opencart/bootstrap.php';
 
 $registry = new \Opencart\System\Engine\Registry();
 $config = new \Opencart\System\Engine\Config();
@@ -29,10 +29,10 @@ $config->load('default');
 $config->load('catalog');
 $registry->set('config', $config);
 
-$discovery = new \Shopwalk\Ucp\Discovery($registry);
+$discovery = new \Shopwalk\Opencart\Discovery($registry);
 
 http_response_code(200);
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: public, max-age=300');
 header('Access-Control-Allow-Origin: *');
-echo \Shopwalk\Ucp\Response::jsonEncode($discovery->oauthMeta());
+echo \Shopwalk\Opencart\Response::jsonEncode($discovery->oauthMeta());

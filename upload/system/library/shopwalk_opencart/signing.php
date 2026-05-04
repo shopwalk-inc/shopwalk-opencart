@@ -1,6 +1,6 @@
 <?php
 /**
- * Shopwalk\Ucp\Signing — RFC 9421 HTTP Message Signatures + detached JWTs.
+ * Shopwalk\Opencart\Signing — RFC 9421 HTTP Message Signatures + detached JWTs.
  *
  * Outbound webhooks are signed per RFC 9421 with SHA-256 HMAC over
  * (content-digest, webhook-id, webhook-timestamp). The same keypair is
@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace Shopwalk\Ucp;
+namespace Shopwalk\Opencart;
 
 final class Signing
 {

@@ -8,7 +8,7 @@
 
 namespace Opencart\Catalog\Controller\Extension\ShopwalkUcp;
 
-require_once DIR_SYSTEM . 'library/shopwalk_ucp/bootstrap.php';
+require_once DIR_SYSTEM . 'library/shopwalk_opencart/bootstrap.php';
 
 class Identity extends \Opencart\System\Engine\Controller
 {
@@ -20,7 +20,7 @@ class Identity extends \Opencart\System\Engine\Controller
             return;
         }
         $body = json_decode((string) file_get_contents('php://input'), true) ?: [];
-        $identity = new \Shopwalk\Ucp\Identity($this->registry);
+        $identity = new \Shopwalk\Opencart\Identity($this->registry);
         $this->emit($identity->link((array) $body, (int) ($auth['claims']['customer_id'] ?? 0)));
     }
 
@@ -32,16 +32,16 @@ class Identity extends \Opencart\System\Engine\Controller
             return;
         }
         $linkId = (string) ($this->request->get['id'] ?? '');
-        $identity = new \Shopwalk\Ucp\Identity($this->registry);
+        $identity = new \Shopwalk\Opencart\Identity($this->registry);
         $this->emit($identity->unlink($linkId, (int) ($auth['claims']['customer_id'] ?? 0)));
     }
 
     private function authenticate(): array
     {
-        $oauth = new \Shopwalk\Ucp\OauthServer($this->registry);
+        $oauth = new \Shopwalk\Opencart\OauthServer($this->registry);
         $claims = $oauth->introspect($_SERVER['HTTP_AUTHORIZATION'] ?? null);
         if ($claims === null) {
-            return ['status' => 401, 'body' => \Shopwalk\Ucp\Response::error('unauthenticated', 'Bearer token required')];
+            return ['status' => 401, 'body' => \Shopwalk\Opencart\Response::error('unauthenticated', 'Bearer token required')];
         }
         return ['status' => 200, 'claims' => $claims];
     }
@@ -51,6 +51,6 @@ class Identity extends \Opencart\System\Engine\Controller
         $this->response->addHeader('HTTP/1.1 ' . (int) ($result['status'] ?? 200));
         $this->response->addHeader('Content-Type: application/json; charset=utf-8');
         $this->response->addHeader('Access-Control-Allow-Origin: *');
-        $this->response->setOutput(\Shopwalk\Ucp\Response::jsonEncode((array) ($result['body'] ?? [])));
+        $this->response->setOutput(\Shopwalk\Opencart\Response::jsonEncode((array) ($result['body'] ?? [])));
     }
 }

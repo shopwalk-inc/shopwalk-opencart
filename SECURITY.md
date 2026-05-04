@@ -6,7 +6,7 @@ Please do **not** open a public GitHub issue for security vulnerabilities. Email
 
 - A description of the issue and its impact.
 - Reproduction steps (request/response samples, shell commands).
-- The OpenCart version and opencart-ucp version you tested against.
+- The OpenCart version and shopwalk-opencart version you tested against.
 - Your disclosure preferences.
 
 We aim to acknowledge within one business day and provide a remediation plan within seven. Credit is given in the release notes unless you prefer otherwise.

@@ -19,14 +19,14 @@
 
 namespace Opencart\Catalog\Controller\Extension\ShopwalkUcp;
 
-require_once DIR_SYSTEM . 'library/shopwalk_ucp/bootstrap.php';
+require_once DIR_SYSTEM . 'library/shopwalk_opencart/bootstrap.php';
 
 class Checkout extends \Opencart\System\Engine\Controller
 {
     public function index(): void
     {
         if ($this->method() !== 'POST') {
-            $this->emit(['body' => \Shopwalk\Ucp\Response::error('method_not_allowed', 'Use POST to create'), 'status' => 405]);
+            $this->emit(['body' => \Shopwalk\Opencart\Response::error('method_not_allowed', 'Use POST to create'), 'status' => 405]);
             return;
         }
         $auth = $this->authenticate();
@@ -35,8 +35,8 @@ class Checkout extends \Opencart\System\Engine\Controller
             return;
         }
         $body = $this->parseBody();
-        $checkout = new \Shopwalk\Ucp\Checkout($this->registry);
-        $idem = new \Shopwalk\Ucp\Idempotency($this->registry);
+        $checkout = new \Shopwalk\Opencart\Checkout($this->registry);
+        $idem = new \Shopwalk\Opencart\Idempotency($this->registry);
         $raw = (string) file_get_contents('php://input');
         $result = $idem->remember(
             $this->header('Idempotency-Key'),
@@ -50,7 +50,7 @@ class Checkout extends \Opencart\System\Engine\Controller
     public function update(): void
     {
         if (!in_array($this->method(), ['PUT', 'POST'], true)) {
-            $this->emit(['body' => \Shopwalk\Ucp\Response::error('method_not_allowed', 'Use PUT'), 'status' => 405]);
+            $this->emit(['body' => \Shopwalk\Opencart\Response::error('method_not_allowed', 'Use PUT'), 'status' => 405]);
             return;
         }
         $auth = $this->authenticate();
@@ -59,7 +59,7 @@ class Checkout extends \Opencart\System\Engine\Controller
             return;
         }
         $id = (string) ($this->request->get['id'] ?? '');
-        $checkout = new \Shopwalk\Ucp\Checkout($this->registry);
+        $checkout = new \Shopwalk\Opencart\Checkout($this->registry);
         $this->emit($checkout->update($id, $this->parseBody()));
     }
 
@@ -71,8 +71,8 @@ class Checkout extends \Opencart\System\Engine\Controller
             return;
         }
         $id = (string) ($this->request->get['id'] ?? '');
-        $checkout = new \Shopwalk\Ucp\Checkout($this->registry);
-        $idem = new \Shopwalk\Ucp\Idempotency($this->registry);
+        $checkout = new \Shopwalk\Opencart\Checkout($this->registry);
+        $idem = new \Shopwalk\Opencart\Idempotency($this->registry);
         $raw = (string) file_get_contents('php://input');
         $result = $idem->remember(
             $this->header('Idempotency-Key'),
@@ -91,7 +91,7 @@ class Checkout extends \Opencart\System\Engine\Controller
             return;
         }
         $id = (string) ($this->request->get['id'] ?? '');
-        $checkout = new \Shopwalk\Ucp\Checkout($this->registry);
+        $checkout = new \Shopwalk\Opencart\Checkout($this->registry);
         $this->emit($checkout->cancel($id));
     }
 
@@ -103,21 +103,21 @@ class Checkout extends \Opencart\System\Engine\Controller
             return;
         }
         $id = (string) ($this->request->get['id'] ?? '');
-        $checkout = new \Shopwalk\Ucp\Checkout($this->registry);
+        $checkout = new \Shopwalk\Opencart\Checkout($this->registry);
         $this->emit($checkout->fetch($id));
     }
 
     private function authenticate(): array
     {
-        $signing = new \Shopwalk\Ucp\Signing($this->registry);
+        $signing = new \Shopwalk\Opencart\Signing($this->registry);
         $raw = (string) file_get_contents('php://input');
         if (!$signing->verifyRequestSignature($raw, $this->header('Request-Signature'))) {
-            return ['status' => 401, 'body' => \Shopwalk\Ucp\Response::error('invalid_signature', 'Request-Signature verification failed')];
+            return ['status' => 401, 'body' => \Shopwalk\Opencart\Response::error('invalid_signature', 'Request-Signature verification failed')];
         }
-        $oauth = new \Shopwalk\Ucp\OauthServer($this->registry);
+        $oauth = new \Shopwalk\Opencart\OauthServer($this->registry);
         $claims = $oauth->introspect($this->header('Authorization'));
         if ($claims === null) {
-            return ['status' => 401, 'body' => \Shopwalk\Ucp\Response::error('unauthenticated', 'Bearer token required')];
+            return ['status' => 401, 'body' => \Shopwalk\Opencart\Response::error('unauthenticated', 'Bearer token required')];
         }
         return ['status' => 200, 'client_id' => (string) $claims['client_id'], 'claims' => $claims];
     }
@@ -146,6 +146,6 @@ class Checkout extends \Opencart\System\Engine\Controller
         $this->response->addHeader('HTTP/1.1 ' . $status);
         $this->response->addHeader('Content-Type: application/json; charset=utf-8');
         $this->response->addHeader('Access-Control-Allow-Origin: *');
-        $this->response->setOutput(\Shopwalk\Ucp\Response::jsonEncode((array) ($result['body'] ?? [])));
+        $this->response->setOutput(\Shopwalk\Opencart\Response::jsonEncode((array) ($result['body'] ?? [])));
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Shopwalk\Ucp\Storage — table creation, migration, teardown.
+ * Shopwalk\Opencart\Storage — table creation, migration, teardown.
  *
  * Called from the admin install/uninstall controller. All UCP tables are
  * prefixed with `{DB_PREFIX}ucp_` so they never collide with OpenCart core
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Shopwalk\Ucp;
+namespace Shopwalk\Opencart;
 
 final class Storage
 {

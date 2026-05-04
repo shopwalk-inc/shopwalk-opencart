@@ -8,19 +8,19 @@
 
 namespace Opencart\Catalog\Controller\Extension\ShopwalkUcp;
 
-require_once DIR_SYSTEM . 'library/shopwalk_ucp/bootstrap.php';
+require_once DIR_SYSTEM . 'library/shopwalk_opencart/bootstrap.php';
 
 class Catalog extends \Opencart\System\Engine\Controller
 {
     public function index(): void
     {
-        $catalog = new \Shopwalk\Ucp\Catalog($this->registry);
+        $catalog = new \Shopwalk\Opencart\Catalog($this->registry);
         $this->emit($catalog->listProducts($this->request->get));
     }
 
     public function fetch(): void
     {
-        $catalog = new \Shopwalk\Ucp\Catalog($this->registry);
+        $catalog = new \Shopwalk\Opencart\Catalog($this->registry);
         $this->emit($catalog->fetchProduct((int) ($this->request->get['id'] ?? 0)));
     }
 
@@ -30,6 +30,6 @@ class Catalog extends \Opencart\System\Engine\Controller
         $this->response->addHeader('Content-Type: application/json; charset=utf-8');
         $this->response->addHeader('Access-Control-Allow-Origin: *');
         $this->response->addHeader('Cache-Control: public, max-age=60');
-        $this->response->setOutput(\Shopwalk\Ucp\Response::jsonEncode((array) ($result['body'] ?? [])));
+        $this->response->setOutput(\Shopwalk\Opencart\Response::jsonEncode((array) ($result['body'] ?? [])));
     }
 }

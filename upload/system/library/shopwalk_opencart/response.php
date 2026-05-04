@@ -1,6 +1,6 @@
 <?php
 /**
- * Shopwalk\Ucp\Response — builds UCP-compliant response bodies.
+ * Shopwalk\Opencart\Response — builds UCP-compliant response bodies.
  *
  * Every UCP response carries:
  *   - a `ucp` envelope (version, capabilities, status)
@@ -14,7 +14,7 @@
 
 declare(strict_types=1);
 
-namespace Shopwalk\Ucp;
+namespace Shopwalk\Opencart;
 
 final class Response
 {

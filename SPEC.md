@@ -1,4 +1,4 @@
-# opencart-ucp — Compliance Map
+# shopwalk-opencart — Compliance Map
 
 > UCP spec version: `2026-04-08`
 > This document maps each UCP spec requirement to its implementation in this repo.
@@ -7,7 +7,7 @@
 
 | Spec                                   | File                                                                                  |
 |----------------------------------------|---------------------------------------------------------------------------------------|
-| `/.well-known/ucp` profile             | `upload/.well-known/ucp.php` → `system/library/shopwalk_ucp/discovery.php`            |
+| `/.well-known/ucp` profile             | `upload/.well-known/ucp.php` → `system/library/shopwalk_opencart/discovery.php`            |
 | `/.well-known/oauth-authorization-server` (RFC 8414) | `upload/.well-known/oauth-authorization-server.php`                       |
 | `ucp.version = "2026-04-08"`           | `Discovery::profile()`                                                                |
 | `services[]` with version/spec/transport/schema/endpoint | `Discovery::services()`                                             |
@@ -22,7 +22,7 @@ Every response includes:
 { "ucp": {"version": "2026-04-08", "capabilities": [...], "status": "ok|error"}, ... }
 ```
 
-Implemented in `system/library/shopwalk_ucp/response.php` (`Response::envelope()`).
+Implemented in `system/library/shopwalk_opencart/response.php` (`Response::envelope()`).
 
 ## 3. Totals
 
@@ -57,7 +57,7 @@ Lifecycle: `incomplete → ready_for_complete → completed | canceled | require
 
 ## 7. Direct checkout (UCP extension)
 
-`POST /ucp/v1/checkout` — single call that creates an OpenCart order (status: pending) and returns a `payment_url`. Customer pays via OpenCart's native gateway. Implemented in `system/library/shopwalk_ucp/direct_checkout.php`. See `UCP_DIRECT_CHECKOUT.md` in the shopwalk-infra spec.
+`POST /ucp/v1/checkout` — single call that creates an OpenCart order (status: pending) and returns a `payment_url`. Customer pays via OpenCart's native gateway. Implemented in `system/library/shopwalk_opencart/direct_checkout.php`. See `UCP_DIRECT_CHECKOUT.md` in the shopwalk-infra spec.
 
 ## 8. Orders
 
@@ -82,12 +82,12 @@ Signature-Input: sig1=("content-digest" "webhook-id" "webhook-timestamp");keyid=
 Signature: sig1=:base64:
 ```
 
-Implemented in `system/library/shopwalk_ucp/webhook_delivery.php`.
+Implemented in `system/library/shopwalk_opencart/webhook_delivery.php`.
 
 ## 10. Idempotency
 
 `Idempotency-Key` stored for 24h. Duplicate key with same body returns cached result; with different body returns HTTP 409.
-Implemented in `system/library/shopwalk_ucp/idempotency.php`.
+Implemented in `system/library/shopwalk_opencart/idempotency.php`.
 
 ## 11. Request headers accepted
 
@@ -106,15 +106,15 @@ Full OAuth 2.0 authorization server with PKCE S256. Scopes:
 - `ucp:scopes:webhooks`
 - `ucp:scopes:catalog`
 
-Implemented in `system/library/shopwalk_ucp/oauth_server.php` and `oauth_clients.php`.
+Implemented in `system/library/shopwalk_opencart/oauth_server.php` and `oauth_clients.php`.
 
 ## 13. Catalog
 
-`GET /catalog/products` and `GET /catalog/products/{id}` expose the OpenCart catalog in UCP catalog format. Implemented in `system/library/shopwalk_ucp/catalog.php`.
+`GET /catalog/products` and `GET /catalog/products/{id}` expose the OpenCart catalog in UCP catalog format. Implemented in `system/library/shopwalk_opencart/catalog.php`.
 
 ## 14. Identity linking
 
-`POST /identity/link` and `DELETE /identity/link/{id}` allow an agent-authenticated user to link an OpenCart customer account. Implemented in `system/library/shopwalk_ucp/identity.php`.
+`POST /identity/link` and `DELETE /identity/link/{id}` allow an agent-authenticated user to link an OpenCart customer account. Implemented in `system/library/shopwalk_opencart/identity.php`.
 
 ## Coverage summary
 

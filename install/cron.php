@@ -4,7 +4,7 @@
  * flushes pending webhook deliveries.
  *
  * Sample crontab (every minute):
- *   * * * * * php /path/to/opencart/opencart-ucp/install/cron.php
+ *   * * * * * php /path/to/opencart/shopwalk-opencart/install/cron.php
  */
 
 declare(strict_types=1);
@@ -22,7 +22,7 @@ if (!defined('DIR_SYSTEM')) {
 }
 
 require_once DIR_SYSTEM . 'startup.php';
-require_once DIR_SYSTEM . 'library/shopwalk_ucp/bootstrap.php';
+require_once DIR_SYSTEM . 'library/shopwalk_opencart/bootstrap.php';
 
 $registry = new \Opencart\System\Engine\Registry();
 $config = new \Opencart\System\Engine\Config();
@@ -39,10 +39,10 @@ $db = new \Opencart\System\Library\DB(
 );
 $registry->set('db', $db);
 
-$storage = new \Shopwalk\Ucp\Storage($registry);
+$storage = new \Shopwalk\Opencart\Storage($registry);
 $cleaned = $storage->cleanupExpired();
 
-$delivery = new \Shopwalk\Ucp\WebhookDelivery($registry);
+$delivery = new \Shopwalk\Opencart\WebhookDelivery($registry);
 $delivered = $delivery->flushPending(50);
 
 echo "[" . gmdate('c') . "] cleaned={$cleaned} delivered={$delivered}\n";

@@ -1,6 +1,6 @@
 <?php
 /**
- * Shopwalk\Ucp\Idempotency — RFC-style idempotency key enforcement.
+ * Shopwalk\Opencart\Idempotency — RFC-style idempotency key enforcement.
  *
  * Callers use `remember($key, $client, $body, $fn)`:
  *   - Same key + same body → cached response is returned (no re-execution).
@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Shopwalk\Ucp;
+namespace Shopwalk\Opencart;
 
 final class Idempotency
 {

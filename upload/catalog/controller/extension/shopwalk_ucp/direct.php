@@ -7,38 +7,38 @@
 
 namespace Opencart\Catalog\Controller\Extension\ShopwalkUcp;
 
-require_once DIR_SYSTEM . 'library/shopwalk_ucp/bootstrap.php';
+require_once DIR_SYSTEM . 'library/shopwalk_opencart/bootstrap.php';
 
 class Direct extends \Opencart\System\Engine\Controller
 {
     public function index(): void
     {
         if (strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
-            $this->emit(['status' => 405, 'body' => \Shopwalk\Ucp\Response::error('method_not_allowed', 'Use POST')]);
+            $this->emit(['status' => 405, 'body' => \Shopwalk\Opencart\Response::error('method_not_allowed', 'Use POST')]);
             return;
         }
-        $signing = new \Shopwalk\Ucp\Signing($this->registry);
+        $signing = new \Shopwalk\Opencart\Signing($this->registry);
         $raw = (string) file_get_contents('php://input');
         $reqSig = $_SERVER['HTTP_REQUEST_SIGNATURE'] ?? null;
         if (!$signing->verifyRequestSignature($raw, $reqSig)) {
-            $this->emit(['status' => 401, 'body' => \Shopwalk\Ucp\Response::error('invalid_signature', 'Request-Signature failed')]);
+            $this->emit(['status' => 401, 'body' => \Shopwalk\Opencart\Response::error('invalid_signature', 'Request-Signature failed')]);
             return;
         }
-        $oauth = new \Shopwalk\Ucp\OauthServer($this->registry);
+        $oauth = new \Shopwalk\Opencart\OauthServer($this->registry);
         $claims = $oauth->introspect($_SERVER['HTTP_AUTHORIZATION'] ?? null);
         if ($claims === null) {
-            $this->emit(['status' => 401, 'body' => \Shopwalk\Ucp\Response::error('unauthenticated', 'Bearer token required')]);
+            $this->emit(['status' => 401, 'body' => \Shopwalk\Opencart\Response::error('unauthenticated', 'Bearer token required')]);
             return;
         }
 
         $body = json_decode($raw, true);
         if (!is_array($body)) {
-            $this->emit(['status' => 400, 'body' => \Shopwalk\Ucp\Response::error('invalid_json', 'Request body must be JSON')]);
+            $this->emit(['status' => 400, 'body' => \Shopwalk\Opencart\Response::error('invalid_json', 'Request body must be JSON')]);
             return;
         }
 
-        $idem = new \Shopwalk\Ucp\Idempotency($this->registry);
-        $direct = new \Shopwalk\Ucp\DirectCheckout($this->registry);
+        $idem = new \Shopwalk\Opencart\Idempotency($this->registry);
+        $direct = new \Shopwalk\Opencart\DirectCheckout($this->registry);
         $result = $idem->remember(
             $_SERVER['HTTP_IDEMPOTENCY_KEY'] ?? null,
             (string) $claims['client_id'],
@@ -53,6 +53,6 @@ class Direct extends \Opencart\System\Engine\Controller
         $this->response->addHeader('HTTP/1.1 ' . (int) $result['status']);
         $this->response->addHeader('Content-Type: application/json; charset=utf-8');
         $this->response->addHeader('Access-Control-Allow-Origin: *');
-        $this->response->setOutput(\Shopwalk\Ucp\Response::jsonEncode((array) $result['body']));
+        $this->response->setOutput(\Shopwalk\Opencart\Response::jsonEncode((array) $result['body']));
     }
 }
