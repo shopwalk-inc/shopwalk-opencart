@@ -1,6 +1,6 @@
 <?php
 /**
- * Shopwalk\Ucp\Orders — read-only UCP Orders API.
+ * Shopwalk\Opencart\Orders — read-only UCP Orders API.
  *
  * Shapes OpenCart orders into UCP order entities:
  *   - line_items[].quantity is { original, total, fulfilled }
@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace Shopwalk\Ucp;
+namespace Shopwalk\Opencart;
 
 final class Orders
 {

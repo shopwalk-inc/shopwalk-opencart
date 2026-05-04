@@ -12,7 +12,7 @@
 
 namespace Opencart\Catalog\Controller\Extension\ShopwalkUcp;
 
-require_once DIR_SYSTEM . 'library/shopwalk_ucp/bootstrap.php';
+require_once DIR_SYSTEM . 'library/shopwalk_opencart/bootstrap.php';
 
 class Discovery extends \Opencart\System\Engine\Controller
 {
@@ -23,13 +23,13 @@ class Discovery extends \Opencart\System\Engine\Controller
 
     public function ucp(): void
     {
-        $discovery = new \Shopwalk\Ucp\Discovery($this->registry);
+        $discovery = new \Shopwalk\Opencart\Discovery($this->registry);
         $this->emitJson($discovery->profile(), 200);
     }
 
     public function oauth(): void
     {
-        $discovery = new \Shopwalk\Ucp\Discovery($this->registry);
+        $discovery = new \Shopwalk\Opencart\Discovery($this->registry);
         $this->emitJson($discovery->oauthMeta(), 200);
     }
 
@@ -39,6 +39,6 @@ class Discovery extends \Opencart\System\Engine\Controller
         $this->response->addHeader('Content-Type: application/json; charset=utf-8');
         $this->response->addHeader('Cache-Control: public, max-age=300');
         $this->response->addHeader('Access-Control-Allow-Origin: *');
-        $this->response->setOutput(\Shopwalk\Ucp\Response::jsonEncode($body));
+        $this->response->setOutput(\Shopwalk\Opencart\Response::jsonEncode($body));
     }
 }

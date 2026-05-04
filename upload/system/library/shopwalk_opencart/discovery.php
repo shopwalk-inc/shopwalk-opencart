@@ -1,6 +1,6 @@
 <?php
 /**
- * Shopwalk\Ucp\Discovery — builds the /.well-known/ucp profile and the
+ * Shopwalk\Opencart\Discovery — builds the /.well-known/ucp profile and the
  * /.well-known/oauth-authorization-server RFC 8414 document.
  *
  * The catalog controller handlers call profile() / oauthMeta() and write the
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Shopwalk\Ucp;
+namespace Shopwalk\Opencart;
 
 final class Discovery
 {
@@ -65,9 +65,9 @@ final class Discovery
             ],
             'platform' => 'opencart',
             'plugin'   => [
-                'name'    => 'Shopwalk UCP — Universal Commerce Protocol adapter',
+                'name'    => 'Shopwalk for OpenCart — Universal Commerce Protocol adapter',
                 'version' => SHOPWALK_UCP_VERSION,
-                'source'  => 'https://github.com/shopwalk-inc/opencart-ucp',
+                'source'  => 'https://github.com/shopwalk-inc/shopwalk-opencart',
             ],
         ];
     }

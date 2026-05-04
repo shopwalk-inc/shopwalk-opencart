@@ -1,6 +1,6 @@
 <?php
 /**
- * Shopwalk\Ucp\OauthClients — CRUD for UCP agent client registrations.
+ * Shopwalk\Opencart\OauthClients — CRUD for UCP agent client registrations.
  *
  * Clients are either self-registered through the dynamic client registration
  * endpoint (RFC 7591) or created from the admin dashboard.
@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace Shopwalk\Ucp;
+namespace Shopwalk\Opencart;
 
 final class OauthClients
 {

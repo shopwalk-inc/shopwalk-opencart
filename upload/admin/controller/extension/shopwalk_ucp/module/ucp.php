@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin controller — Shopwalk UCP module dashboard.
+ * Admin controller — Shopwalk for OpenCart module dashboard.
  *
  *   index()    Render the dashboard (self-test, signing fingerprint,
  *              webhook subscriptions list, Shopwalk connect CTA).
@@ -12,7 +12,7 @@
 
 namespace Opencart\Admin\Controller\Extension\ShopwalkUcp\Module;
 
-require_once DIR_SYSTEM . 'library/shopwalk_ucp/bootstrap.php';
+require_once DIR_SYSTEM . 'library/shopwalk_opencart/bootstrap.php';
 
 class Ucp extends \Opencart\System\Engine\Controller
 {
@@ -35,10 +35,10 @@ class Ucp extends \Opencart\System\Engine\Controller
             return;
         }
 
-        $signing = new \Shopwalk\Ucp\Signing($this->registry);
-        $selfTest = (new \Shopwalk\Ucp\SelfTest($this->registry))->run();
-        $subs = new \Shopwalk\Ucp\WebhookSubscriptions($this->registry);
-        $clients = new \Shopwalk\Ucp\OauthClients($this->registry);
+        $signing = new \Shopwalk\Opencart\Signing($this->registry);
+        $selfTest = (new \Shopwalk\Opencart\SelfTest($this->registry))->run();
+        $subs = new \Shopwalk\Opencart\WebhookSubscriptions($this->registry);
+        $clients = new \Shopwalk\Opencart\OauthClients($this->registry);
 
         $data = [
             'heading_title'       => $this->language->get('heading_title'),
@@ -68,9 +68,9 @@ class Ucp extends \Opencart\System\Engine\Controller
 
     public function install(): void
     {
-        $storage = new \Shopwalk\Ucp\Storage($this->registry);
+        $storage = new \Shopwalk\Opencart\Storage($this->registry);
         $storage->install();
-        (new \Shopwalk\Ucp\Signing($this->registry))->keypair();
+        (new \Shopwalk\Opencart\Signing($this->registry))->keypair();
         $this->registerEvents();
     }
 
@@ -78,13 +78,13 @@ class Ucp extends \Opencart\System\Engine\Controller
     {
         $this->unregisterEvents();
         if (!empty($this->request->get['drop_data'])) {
-            (new \Shopwalk\Ucp\Storage($this->registry))->uninstall(true);
+            (new \Shopwalk\Opencart\Storage($this->registry))->uninstall(true);
         }
     }
 
     public function self_test(): void
     {
-        $results = (new \Shopwalk\Ucp\SelfTest($this->registry))->run();
+        $results = (new \Shopwalk\Opencart\SelfTest($this->registry))->run();
         $this->response->addHeader('Content-Type: application/json; charset=utf-8');
         $this->response->setOutput(json_encode(['results' => $results], JSON_UNESCAPED_SLASHES));
     }
@@ -161,7 +161,7 @@ class Ucp extends \Opencart\System\Engine\Controller
         $this->model_setting_event->deleteEventByCode(self::EVENT_CODE);
         $this->model_setting_event->addEvent([
             'code'        => self::EVENT_CODE,
-            'description' => 'Shopwalk UCP — fire order status webhooks',
+            'description' => 'Shopwalk — fire order status webhooks',
             'trigger'     => 'admin/model/sale/order/addHistory/after',
             'action'      => 'extension/shopwalk_ucp/startup/onOrderHistoryAdded',
             'status'      => true,
@@ -169,7 +169,7 @@ class Ucp extends \Opencart\System\Engine\Controller
         ]);
         $this->model_setting_event->addEvent([
             'code'        => self::EVENT_CODE,
-            'description' => 'Shopwalk UCP — fire order status webhooks (catalog)',
+            'description' => 'Shopwalk — fire order status webhooks (catalog)',
             'trigger'     => 'catalog/model/checkout/order/addHistory/after',
             'action'      => 'extension/shopwalk_ucp/startup/onOrderHistoryAdded',
             'status'      => true,

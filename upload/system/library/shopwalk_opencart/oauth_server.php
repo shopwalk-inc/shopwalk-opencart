@@ -1,6 +1,6 @@
 <?php
 /**
- * Shopwalk\Ucp\OauthServer — OAuth 2.0 + PKCE S256 authorization server.
+ * Shopwalk\Opencart\OauthServer — OAuth 2.0 + PKCE S256 authorization server.
  *
  * Endpoints (routed under /index.php?route=extension/shopwalk_ucp/oauth/...):
  *   GET  /authorize  — login screen that issues a code bound to the customer
@@ -15,7 +15,7 @@
 
 declare(strict_types=1);
 
-namespace Shopwalk\Ucp;
+namespace Shopwalk\Opencart;
 
 final class OauthServer
 {

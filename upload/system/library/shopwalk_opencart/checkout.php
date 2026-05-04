@@ -1,6 +1,6 @@
 <?php
 /**
- * Shopwalk\Ucp\Checkout — session-based UCP checkout.
+ * Shopwalk\Opencart\Checkout — session-based UCP checkout.
  *
  * Lifecycle: incomplete → ready_for_complete → completed | canceled
  *                                             → requires_escalation
@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Shopwalk\Ucp;
+namespace Shopwalk\Opencart;
 
 final class Checkout
 {

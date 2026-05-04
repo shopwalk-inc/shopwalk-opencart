@@ -10,7 +10,7 @@
 
 namespace Opencart\Catalog\Controller\Extension\ShopwalkUcp;
 
-require_once DIR_SYSTEM . 'library/shopwalk_ucp/bootstrap.php';
+require_once DIR_SYSTEM . 'library/shopwalk_opencart/bootstrap.php';
 
 class Startup extends \Opencart\System\Engine\Controller
 {
@@ -30,13 +30,13 @@ class Startup extends \Opencart\System\Engine\Controller
         }
         $orderId = (int) $args[0];
         $statusId = (int) ($args[1] ?? 0);
-        $delivery = new \Shopwalk\Ucp\WebhookDelivery($this->registry);
+        $delivery = new \Shopwalk\Opencart\WebhookDelivery($this->registry);
         try {
             $delivery->onOrderStatusChanged($orderId, 0, $statusId);
             $delivery->flushPending(10);
         } catch (\Throwable $e) {
             // Swallow — never break the merchant's checkout on a webhook error.
-            $this->registry->get('log')?->write('opencart-ucp webhook error: ' . $e->getMessage());
+            $this->registry->get('log')?->write('shopwalk-opencart webhook error: ' . $e->getMessage());
         }
     }
 }

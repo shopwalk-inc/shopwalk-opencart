@@ -1,6 +1,6 @@
 <?php
 /**
- * Shopwalk\Ucp\Catalog — UCP catalog capability.
+ * Shopwalk\Opencart\Catalog — UCP catalog capability.
  *
  * Exposes the OpenCart catalog in UCP catalog format so agents can discover
  * products before creating a checkout. This is a thin projection of
@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Shopwalk\Ucp;
+namespace Shopwalk\Opencart;
 
 final class Catalog
 {

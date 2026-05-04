@@ -1,4 +1,4 @@
-# opencart-ucp — Universal Commerce Protocol adapter for OpenCart
+# shopwalk-opencart — Universal Commerce Protocol adapter for OpenCart
 
 **Make any OpenCart store fully purchasable by UCP-compliant AI shopping agents.**
 
@@ -30,15 +30,15 @@ The extension is **vendor-neutral** — it implements ucp.dev exactly. You do no
 
 1. Download the latest release zip from the Releases page.
 2. In OpenCart admin: **Extensions → Installer** → upload the zip.
-3. **Extensions → Extensions → Modules** → install **Shopwalk UCP**.
+3. **Extensions → Extensions → Modules** → install **Shopwalk**.
 4. Open the module and click **Run self-test**. All checks should pass.
 5. (Optional) Paste a Shopwalk license key to enable Tier 2 features.
 
 Or clone this repo and symlink `upload/*` into your OpenCart install:
 
 ```bash
-git clone https://github.com/shopwalk-inc/opencart-ucp.git
-cp -R opencart-ucp/upload/* /path/to/opencart/
+git clone https://github.com/shopwalk-inc/shopwalk-opencart.git
+cp -R shopwalk-opencart/upload/* /path/to/opencart/
 ```
 
 ## Endpoints exposed
@@ -70,9 +70,9 @@ See [`SPEC.md`](SPEC.md) for a detailed map of this extension's coverage.
 
 ## Related projects
 
-- [`woocommerce-ucp`](https://github.com/shopwalk-inc/woocommerce-ucp) — same adapter for WooCommerce.
-- [`magento-ucp`](https://github.com/shopwalk-inc/magento-ucp) — same adapter for Magento 2.
-- [`prestashop-ucp`](https://github.com/shopwalk-inc/prestashop-ucp) — same adapter for PrestaShop.
+- [`shopwalk-woocommerce`](https://github.com/shopwalk-inc/shopwalk-woocommerce) — same adapter for WooCommerce.
+- [`shopwalk-magento`](https://github.com/shopwalk-inc/shopwalk-magento) — same adapter for Magento 2.
+- [`shopwalk-prestashop`](https://github.com/shopwalk-inc/shopwalk-prestashop) — same adapter for PrestaShop.
 
 ## Contributing
 

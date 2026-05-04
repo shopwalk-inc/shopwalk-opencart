@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to opencart-ucp are tracked here.
+All notable changes to shopwalk-opencart are tracked here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 and the UCP spec version it targets is noted per release.
 

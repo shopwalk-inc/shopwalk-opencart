@@ -1,6 +1,6 @@
 <?php
 /**
- * Shopwalk\Ucp\SelfTest — diagnostic checks surfaced in the admin dashboard
+ * Shopwalk\Opencart\SelfTest — diagnostic checks surfaced in the admin dashboard
  * and available via `php upload/admin/cli/self-test.php`.
  *
  * Each check returns ['name' => ..., 'status' => ok|warn|error, 'detail' => ...].
@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace Shopwalk\Ucp;
+namespace Shopwalk\Opencart;
 
 final class SelfTest
 {

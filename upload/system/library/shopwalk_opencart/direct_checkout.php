@@ -1,6 +1,6 @@
 <?php
 /**
- * Shopwalk\Ucp\DirectCheckout — UCP direct checkout extension.
+ * Shopwalk\Opencart\DirectCheckout — UCP direct checkout extension.
  *
  * One call, no session machinery:
  *   POST /ucp/v1/checkout { items, customer, shipping_address, return_url, metadata }
@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Shopwalk\Ucp;
+namespace Shopwalk\Opencart;
 
 final class DirectCheckout
 {

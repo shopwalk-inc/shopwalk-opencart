@@ -1,6 +1,6 @@
 <?php
 /**
- * Shopwalk\Ucp\WebhookDelivery — signs and sends outbound order webhooks.
+ * Shopwalk\Opencart\WebhookDelivery — signs and sends outbound order webhooks.
  *
  * Triggered from the OpenCart `admin/model/sale/order/addOrderHistory/after`
  * event (wired up via startup event registration). On each order status
@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Shopwalk\Ucp;
+namespace Shopwalk\Opencart;
 
 final class WebhookDelivery
 {

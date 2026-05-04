@@ -3,7 +3,7 @@
  * Standalone installer — creates the UCP database tables and generates a
  * signing keypair. Run from the OpenCart root:
  *
- *   php opencart-ucp/install/install.php
+ *   php shopwalk-opencart/install/install.php
  *
  * Intended for sysadmins who can't (or don't want to) use the OpenCart
  * Extensions → Installer UI. The admin controller runs the same logic via
@@ -25,7 +25,7 @@ if (!defined('DIR_SYSTEM')) {
 }
 
 require_once DIR_SYSTEM . 'startup.php';
-require_once DIR_SYSTEM . 'library/shopwalk_ucp/bootstrap.php';
+require_once DIR_SYSTEM . 'library/shopwalk_opencart/bootstrap.php';
 
 $registry = new \Opencart\System\Engine\Registry();
 $config = new \Opencart\System\Engine\Config();
@@ -42,10 +42,10 @@ $db = new \Opencart\System\Library\DB(
 );
 $registry->set('db', $db);
 
-(new \Shopwalk\Ucp\Storage($registry))->install();
-$signing = new \Shopwalk\Ucp\Signing($registry);
+(new \Shopwalk\Opencart\Storage($registry))->install();
+$signing = new \Shopwalk\Opencart\Signing($registry);
 $pair = $signing->keypair();
 
 echo "✓ Tables created\n";
 echo "✓ Signing keypair: kid={$pair['kid']}, fingerprint=" . $signing->fingerprint() . "\n";
-echo "\nNext: visit admin → Extensions → Modules → Shopwalk UCP to configure.\n";
+echo "\nNext: visit admin → Extensions → Modules → Shopwalk to configure.\n";

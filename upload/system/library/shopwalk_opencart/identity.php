@@ -1,6 +1,6 @@
 <?php
 /**
- * Shopwalk\Ucp\Identity — UCP identity linking capability.
+ * Shopwalk\Opencart\Identity — UCP identity linking capability.
  *
  * Lets an agent link a UCP OAuth session to an OpenCart customer account.
  * Once linked, subsequent checkouts performed via that bearer token apply
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Shopwalk\Ucp;
+namespace Shopwalk\Opencart;
 
 final class Identity
 {
